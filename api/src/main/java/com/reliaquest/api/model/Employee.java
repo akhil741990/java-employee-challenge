@@ -13,7 +13,7 @@ import lombok.extern.jackson.Jacksonized;
 @Builder
 public class Employee {
 
-	@JsonProperty("employee_id")
+	@JsonProperty("id")
 	UUID id;
 	@JsonProperty("employee_name")
 	String name;
@@ -25,4 +25,12 @@ public class Employee {
 	String title;
 	@JsonProperty("employee_email")
 	String email;
+	
+	//Eclipse lombook error in autogenerating the methods for @Data, hence adding it explicitly
+	public String getName() {
+		return name;
+	}
+	public UUID getId() {
+		return id;
+	}
 }
