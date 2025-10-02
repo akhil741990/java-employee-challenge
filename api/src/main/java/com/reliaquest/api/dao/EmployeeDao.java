@@ -10,35 +10,41 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import com.reliaquest.api.model.Employee;
-import com.reliaquest.api.model.EmployeeResponse;
+import com.reliaquest.api.model.CreateEmployeeRequest;
+import com.reliaquest.api.model.CreateEmployeeResponse;
+import com.reliaquest.api.model.AllEmployeesResponse;
 
 @Repository
 public class EmployeeDao {
 	
-	@Autowired
-	private RestTemplate restTemplate;
 	
-	public EmployeeDao(RestTemplate restTemplate) {
+	private RestTemplate restTemplate;
+	private String serverUrl; 
+	
+	@Autowired
+	public EmployeeDao(@Value("${emp.server.url}") String serverUrl, RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
+		this.serverUrl = serverUrl;
 	}
 	
 	public List<Employee>getAllEmployees() {
-		
-		String url = "http://localhost:8112/api/v1/employee";  // returns JSON array of employees
 
-        ResponseEntity<EmployeeResponse> response = restTemplate.exchange(
-                url,
+        ResponseEntity<AllEmployeesResponse> response = restTemplate.exchange(
+                serverUrl,
                 HttpMethod.GET,
                 HttpEntity.EMPTY,   // no headers
-                EmployeeResponse.class
+                AllEmployeesResponse.class
         );
         return response.getBody().getData();
 	}
@@ -81,5 +87,16 @@ public class EmployeeDao {
 		return top10EmpBasedOnSalary
 			.stream().map(emp -> emp.getName()).toList();
 		
+	}
+	
+	public CreateEmployeeResponse createEmployee(CreateEmployeeRequest empReq) {
+		
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<CreateEmployeeRequest> request = new HttpEntity<>(empReq, headers);
+
+        
+        ResponseEntity<CreateEmployeeResponse> response = restTemplate.postForEntity(serverUrl, request, CreateEmployeeResponse.class);
+        return response.getBody();
 	}
 }

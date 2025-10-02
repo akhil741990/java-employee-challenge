@@ -6,9 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-@Data
+@Value
 @Jacksonized
 @Builder
 public class Employee {
@@ -26,15 +27,4 @@ public class Employee {
 	@JsonProperty("employee_email")
 	String email;
 	
-	//Eclipse lombook error in autogenerating the methods for @Data, hence adding it explicitly
-	public String getName() {
-		return name;
-	}
-	public UUID getId() {
-		return id;
-	}
-	
-	public Integer getSalary() {
-		return salary;
-	}
 }

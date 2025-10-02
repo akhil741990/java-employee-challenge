@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.reliaquest.api.dao.EmployeeDao;
+import com.reliaquest.api.model.CreateEmployeeRequest;
+import com.reliaquest.api.model.CreateEmployeeResponse;
 import com.reliaquest.api.model.Employee;
 
 @Service
@@ -35,5 +37,9 @@ public class EmployeeService {
 	
 	public Integer getHighestSalaryOfEmployees() {
 		return employeeDao.getHighestSalaryOfEmployees();
+	}
+	
+	public CreateEmployeeResponse createEmployee(CreateEmployeeRequest empReq) {
+		return employeeDao.createEmployee(empReq);
 	}
 }

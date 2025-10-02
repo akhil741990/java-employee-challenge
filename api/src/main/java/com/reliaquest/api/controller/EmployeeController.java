@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.reliaquest.api.model.Employee;
-import com.reliaquest.api.model.EmployeeRequest;
+import com.reliaquest.api.model.CreateEmployeeRequest;
 import com.reliaquest.api.service.EmployeeService;
 
 @RequestMapping("/api/v1/employee")
 @RestController
-public class EmployeeController implements IEmployeeController<Employee, EmployeeRequest> {
+public class EmployeeController implements IEmployeeController<Employee, CreateEmployeeRequest> {
 	
 	private final EmployeeService employeeService;
 	@Autowired
@@ -58,9 +58,9 @@ public class EmployeeController implements IEmployeeController<Employee, Employe
 	}
 
 	@Override
-	public ResponseEntity<Employee> createEmployee(EmployeeRequest employeeInput) {
+	public ResponseEntity<Employee> createEmployee(CreateEmployeeRequest employeeInput) {
 		// TODO Auto-generated method stub
-		return null;
+		return ResponseEntity.ok(employeeService.createEmployee(employeeInput).getData());
 	}
 
 	@Override
