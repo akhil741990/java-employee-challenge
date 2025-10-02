@@ -1,3 +1,5 @@
 spring.application.name: employee-api
 server.port: 8111
 emp.server.url: http://localhost:8112/api/v1/employee
+emp.http.max.retries: 3
+emp.http.initial.wait.in.millis: 1000
