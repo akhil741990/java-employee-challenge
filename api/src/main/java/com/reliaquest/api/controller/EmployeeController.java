@@ -48,13 +48,13 @@ public class EmployeeController implements IEmployeeController<Employee, Employe
 	@Override
 	public ResponseEntity<Integer> getHighestSalaryOfEmployees() {
 		// TODO Auto-generated method stub
-		return null;
+		return ResponseEntity.ok(employeeService.getHighestSalaryOfEmployees());
 	}
 
 	@Override
 	public ResponseEntity<List<String>> getTopTenHighestEarningEmployeeNames() {
 		// TODO Auto-generated method stub
-		return null;
+		return ResponseEntity.ok(employeeService.getTopTenHighestEarningEmployeeNames());
 	}
 
 	@Override

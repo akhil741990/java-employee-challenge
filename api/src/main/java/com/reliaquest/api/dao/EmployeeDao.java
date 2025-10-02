@@ -1,8 +1,11 @@
 package com.reliaquest.api.dao;
 
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.PriorityQueue;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -54,5 +57,29 @@ public class EmployeeDao {
 				.findFirst()
 				.orElse(null);
 	}
+	
+	public Integer getHighestSalaryOfEmployees() {
+		return getAllEmployees()
+				.stream()
+				.mapToInt(emp -> emp.getSalary())
+				.max()
+				.orElse(0);
+	}
 
+	public List<String> getTopTenHighestEarningEmployeeNames() {
+		List<Employee> employees = getAllEmployees();
+		PriorityQueue<Employee> minHeap = new PriorityQueue<Employee>(Comparator.comparingInt(Employee::getSalary));
+		employees.forEach(emp -> {
+			minHeap.offer(emp);
+			if(minHeap.size() > 10) {
+				minHeap.poll();
+			}
+		});
+		List<Employee> top10EmpBasedOnSalary = new ArrayList<Employee>(minHeap);
+		top10EmpBasedOnSalary
+			.sort(Comparator.comparingInt(Employee::getSalary).reversed());
+		return top10EmpBasedOnSalary
+			.stream().map(emp -> emp.getName()).toList();
+		
+	}
 }

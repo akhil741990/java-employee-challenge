@@ -28,4 +28,12 @@ public class EmployeeService {
 	public Employee getEmployeesById(String id){
 		return employeeDao.getEmployeesById(id);
 	}
+	
+	public List<String> getTopTenHighestEarningEmployeeNames() {
+		return employeeDao.getTopTenHighestEarningEmployeeNames();
+	}
+	
+	public Integer getHighestSalaryOfEmployees() {
+		return employeeDao.getHighestSalaryOfEmployees();
+	}
 }

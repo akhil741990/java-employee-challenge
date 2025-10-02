@@ -20,7 +20,7 @@ public class Employee {
 	@JsonProperty("employee_age")
 	Integer age;
 	@JsonProperty("employee_salary")
-	Integer salaray;
+	Integer salary;
 	@JsonProperty("employee_title")
 	String title;
 	@JsonProperty("employee_email")
@@ -32,5 +32,9 @@ public class Employee {
 	}
 	public UUID getId() {
 		return id;
+	}
+	
+	public Integer getSalary() {
+		return salary;
 	}
 }
