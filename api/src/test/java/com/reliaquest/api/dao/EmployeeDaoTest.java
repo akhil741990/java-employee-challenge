@@ -22,6 +22,8 @@ import org.springframework.web.client.RestTemplate;
 import com.reliaquest.api.model.AllEmployeesResponse;
 import com.reliaquest.api.model.CreateEmployeeRequest;
 import com.reliaquest.api.model.CreateEmployeeResponse;
+import com.reliaquest.api.model.DeleteEmployeeRequest;
+import com.reliaquest.api.model.DeleteEmployeeResponse;
 import com.reliaquest.api.model.Employee;
 
 @ExtendWith(MockitoExtension.class)
@@ -112,6 +114,39 @@ public class EmployeeDaoTest {
 			assertEquals(1000, response.getData().getSalary());
 			assertEquals("EMP_title",response.getData().getTitle());
 			assertEquals(27, response.getData().getAge());
+			
+	}
+	
+	@Test
+	void deleteEmployeeTest() {
+	
+			DeleteEmployeeRequest req = DeleteEmployeeRequest.builder().name("EMP_1").build();
+			
+			DeleteEmployeeResponse mockResponse = DeleteEmployeeResponse
+					.builder()
+					.data(true)
+					.status("Successfully processed request.")
+					.build();
+			
+			ResponseEntity<DeleteEmployeeResponse> responseEntity =
+	                new ResponseEntity<>(mockResponse, HttpStatus.OK);
+			
+			
+			when(restTemplate.exchange(
+					anyString(),
+	                any(HttpMethod.class),
+	                any(HttpEntity.class),
+	                ArgumentMatchers.<Class<DeleteEmployeeResponse>>any()
+	        )).thenReturn(responseEntity);
+			
+
+			
+			DeleteEmployeeResponse response = employeeDao.deleteEmployee(req);
+			
+			
+			assertEquals(true, response.getData());
+			assertEquals("Successfully processed request.", response.getStatus());
+		
 			
 	}
 }

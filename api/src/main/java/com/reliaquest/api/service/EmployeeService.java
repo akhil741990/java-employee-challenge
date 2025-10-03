@@ -92,6 +92,6 @@ public class EmployeeService {
 		}
 		DeleteEmployeeRequest req = DeleteEmployeeRequest.builder().name(emp.getName()).build();
 		
-		return  employeeDao.deleteEmployee(req);
+		return  employeeDao.deleteEmployee(req).getData();
 	}
 }

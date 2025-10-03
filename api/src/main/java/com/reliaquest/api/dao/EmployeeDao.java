@@ -78,7 +78,7 @@ public class EmployeeDao {
 		
 	}
 	
-	public Boolean deleteEmployee(DeleteEmployeeRequest req) {
+	public DeleteEmployeeResponse deleteEmployee(DeleteEmployeeRequest req) {
 		
 		log.info("deleting employe with name : {}", req.getName());
 		return HttpRetryHandler.executeWithRetry(() -> {
@@ -87,26 +87,13 @@ public class EmployeeDao {
 
 			HttpEntity<DeleteEmployeeRequest> request = new HttpEntity<>(req, headers);
 
-			RestTemplate restTemplate = new RestTemplate();
-			
-			ObjectMapper mapper = new ObjectMapper();
-
-	        // Pretty print JSON
-	        try {
-				String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(req);
-				log.info("Req : {}" , json);
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 			ResponseEntity<DeleteEmployeeResponse> response = restTemplate.exchange(
 			        serverUrl,
 			        HttpMethod.DELETE,
 			        request,
-			        new ParameterizedTypeReference<DeleteEmployeeResponse>() {}
+			        DeleteEmployeeResponse.class
 			);
-			return response.getBody().getData();
+			return response.getBody();
 		}, maxRetries, initialWaitInMillis);
 
 		
