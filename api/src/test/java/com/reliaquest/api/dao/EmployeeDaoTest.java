@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.reliaquest.api.model.AllEmployeesResponse;
+import com.reliaquest.api.model.CreateEmployeeRequest;
+import com.reliaquest.api.model.CreateEmployeeResponse;
 import com.reliaquest.api.model.Employee;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,12 +56,62 @@ public class EmployeeDaoTest {
 	                ArgumentMatchers.<Class<AllEmployeesResponse>>any()
 	        )).thenReturn(responseEntity);
 			
+//			when(restTemplate.exchange(
+//	                anyString(),
+//	                HttpMethod.GET,
+//	                HttpEntity.EMPTY,
+//	                ArgumentMatchers.<Class<AllEmployeesResponse>>any()
+//	        )).thenReturn(responseEntity);
+			
 			List<Employee> response = employeeDao.getAllEmployees();
 			
 				
 			assertEquals(2,response.size());
 			assertEquals(response.get(0).getName(), "EMP_1");
 			assertEquals(response.get(0).getSalary(), 1000);
+			
+	}
+	
+	
+	@Test
+	void createEmployeeTest() {
+			Employee e1 = Employee.builder()
+					.name("EMP_1")
+					.salary(1000)
+					.title("EMP_title")
+					.age(27)
+					.build();
+			CreateEmployeeRequest req = CreateEmployeeRequest.builder()
+											.name(e1.getName())
+											.salary(e1.getSalary())
+											.age(e1.getAge())
+											.title(e1.getTitle())
+											.build();
+			
+			CreateEmployeeResponse mockResponse = CreateEmployeeResponse.builder()
+					.data(e1)
+					.status("Successfully processed request")
+					.build();
+			
+			ResponseEntity<CreateEmployeeResponse> responseEntity =
+	                new ResponseEntity<>(mockResponse, HttpStatus.OK);
+			
+			
+			when(restTemplate.postForEntity(
+	                anyString(),
+	                any(HttpEntity.class),
+	                ArgumentMatchers.<Class<CreateEmployeeResponse>>any()
+	        )).thenReturn(responseEntity);
+			
+
+			
+			CreateEmployeeResponse response = employeeDao.createEmployee(req);
+			
+			
+			assertEquals("EMP_1", response.getData().getName());
+			assertEquals(1000, response.getData().getSalary());
+			assertEquals("EMP_title",response.getData().getTitle());
+			assertEquals(27, response.getData().getAge());
 			
 	}
 }

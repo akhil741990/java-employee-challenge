@@ -1,8 +1,7 @@
 package com.reliaquest.api.util;
 
-import org.apache.logging.log4j.util.Supplier;
 
-import com.reliaquest.api.ApiApplication;
+import java.util.function.Supplier;
 import com.reliaquest.api.exception.ApiErrorCode;
 import com.reliaquest.api.exception.ApiException;
 
@@ -18,10 +17,6 @@ public class HttpRetryHandler {
 	                return action.get();
 	            } catch (org.springframework.web.client.HttpClientErrorException.TooManyRequests e) {
 	            	log.error("RetryAttempt : {}, errorMsg : {}", attempt, e.getMessage());
-	                if (attempt == maxRetries) {
-	                    throw e;
-	                }
-
 	                try {
 	                    Thread.sleep(waitTime);
 	                } catch (InterruptedException ie) {
@@ -36,7 +31,8 @@ public class HttpRetryHandler {
 	        throw ApiException
 	        		.builder()
 	        		.apiErrorCode(ApiErrorCode.TOO_MANY_REQUESTS)
-	        		.message("Failed after retrying : %s".formatted(maxRetries)).build();
+	        		.message("Failed after retrying : %s times".formatted(maxRetries)).build();
+
 	    }
 
 }

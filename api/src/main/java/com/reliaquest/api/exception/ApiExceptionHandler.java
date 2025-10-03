@@ -1,5 +1,6 @@
 package com.reliaquest.api.exception;
 
+import java.io.IOException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,6 +22,13 @@ public class ApiExceptionHandler {
 				.code(code)
 				.message(mesage)
 				.build();
+	}
+	@ExceptionHandler(IOException.class)
+	protected ResponseEntity<ApiError> handleIOException(IOException exception){
+		
+		HttpStatus httpStatus = HttpStatus.valueOf(ApiErrorCode.INTERNAL_SERVER_ERROR.getHttpCode());
+		ApiError apiError = buildApiError(ApiErrorCode.INTERNAL_SERVER_ERROR.getCode(), exception.getMessage());
+		return new ResponseEntity<>(apiError, httpStatus);
 	}
 
 }

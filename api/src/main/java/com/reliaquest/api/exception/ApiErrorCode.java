@@ -10,7 +10,8 @@ import lombok.Getter;
 public enum ApiErrorCode {
 
 	BAD_REQUEST("API_EMP_1000_400", "Bad Request"), // Bad Request Error Code range 1000 -> 1999 
-	TOO_MANY_REQUESTS("API_EMP_2000_429", "Too many Requests");
+	TOO_MANY_REQUESTS("API_EMP_2000_429", "Too many Requests"),
+	INTERNAL_SERVER_ERROR("API_EMP_3000_500", "Internal Server Error");
 	private final String code;
 	private final String message;
 	

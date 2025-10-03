@@ -64,9 +64,10 @@ public class EmployeeController implements IEmployeeController<Employee, CreateE
 	}
 
 	@Override
-	public ResponseEntity<String> deleteEmployeeById(String id) {
+	public ResponseEntity<String> deleteEmployeeById(@PathVariable("id") String id) {
 		// TODO Auto-generated method stub
-		return null;
+		return employeeService.deleteEmployeeById(id) ?  ResponseEntity.ok("Employee with id : %s deleted successfully".formatted(id))
+				: ResponseEntity.notFound().build() ;
 	}
 
 }
